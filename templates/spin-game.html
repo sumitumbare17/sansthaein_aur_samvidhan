@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin a Wheel Game</title>
+    <link rel="stylesheet" href="spin-game.css">
+</head>
+<body>
+    <header>
+        <h1>Spin a Wheel Game</h1>
+        <p>Test your knowledge of the Indian Constitution by spinning the wheel!</p>
+    </header>
+
+    <main>
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+            <button id="spinButton" onclick="spinWheel()">Spin</button>
+        </div>
+        <div id="questionContainer" class="hidden">
+            <h2>Question</h2>
+            <p id="questionText"></p>
+            <div id="optionsContainer"></div>
+            <button id="nextButton" onclick="resetGame()">Next Question</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script src="spin-game.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin a Wheel Game</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .wheel-container {
+            margin: 50px auto;
+            position: relative;
+        }
+
+        #wheelCanvas {
+            border: 5px solid #333;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #spinButton {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 18px;
+        }
+
+        #spinButton:hover {
+            background-color: #218838;
+        }
+
+        #questionContainer {
+            margin-top: 50px;
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+
+        #questionText {
+            font-size: 1.4em;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #optionsContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .optionButton {
+            display: block;
+            margin: 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .optionButton:hover {
+            background-color: #0056b3;
+        }
+
+        .optionButton.glow {
+            background-color: #28a745;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+        }
+
+        .optionButton.wrong {
+            background-color: #dc3545;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes confettiAnimation {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        #nextButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 18px;
+            display: none; /* Initially hidden */
+        }
+
+        #nextButton:hover {
+            background-color: #0056b3;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #333; /* Changed to point downwards */
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .confetti > div {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            opacity: 0;
+            border-radius: 50%;
+            animation: confettiAnimation 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Spin a Wheel Game</h1>
+        <p>Test your knowledge of the Indian Constitution by spinning the wheel!</p>
+    </header>
+
+    <main>
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+            <div class="arrow"></div>
+            <button id="spinButton" onclick="spinWheel()">Spin</button>
+        </div>
+        <div id="questionContainer">
+            <h2 id="questionText">Question</h2>
+            <div id="optionsContainer"></div>
+            <button id="nextButton" onclick="nextQuestion()">Next</button>
+        </div>
+    </main>
+
+    <div class="confetti" id="confettiContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const spinButton = document.getElementById('spinButton');
+        const questionContainer = document.getElementById('questionContainer');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const nextButton = document.getElementById('nextButton');
+        const confettiContainer = document.getElementById('confettiContainer');
+
+        const segments = [
+            { text: 'Legislature', color: '#FFD700' },
+            { text: 'Executive', color: '#FF8C00' },
+            { text: 'Judiciary', color: '#1E90FF' }
+        ];
+
+        const questions = {
+            'Legislature': [
+                { text: 'What is the primary role of the Legislature?', options: [
+                    { text: 'Judicial Review', correct: false },
+                    { text: 'Law Making', correct: true },
+                    { text: 'Executive Decisions', correct: false },
+                    { text: 'Administrative Functions', correct: false }
+                ]},
+                { text: 'How many houses does the Legislature of India have?', options: [
+                    { text: 'One', correct: false },
+                    { text: 'Two', correct: true },
+                    { text: 'Three', correct: false },
+                    { text: 'Four', correct: false }
+                ]},
+                { text: 'Which of the following States has a Legislature with two Houses?', options: [
+            { text: 'Goa', correct: false },
+            { text: 'Bihar', correct: true },
+            { text: 'Sikkim', correct: false },
+            { text: 'Tripura', correct: false }
+        ]},
+        { text: 'Under Article 169 of the Indian Constitution, how can a State\'s Legislative Council be abolished?', options: [
+            { text: 'By a resolution of the Legislative Assembly passed by a simple majority', correct: false },
+            { text: 'By a resolution of the Legislative Assembly passed by a majority of the total membership', correct: false },
+            { text: 'By a resolution of the Legislative Assembly passed by a majority of the total membership and by two-thirds of the members present and voting', correct: true },
+            { text: 'By a decision of the Governor', correct: false }
+        ]},
+        { text: 'What is the minimum number of members in the Legislative Council of a State?', options: [
+            { text: '20', correct: false },
+            { text: '40', correct: true },
+            { text: '60', correct: false },
+            { text: '80', correct: false }
+        ]},
+        { text: 'How are members of the Legislative Council elected under clause (3) of Article 171?', options: [
+            { text: 'By direct election from the public', correct: false },
+            { text: 'By members of the Legislative Assembly', correct: false },
+            { text: 'By local authorities, university graduates, and teachers', correct: true },
+            { text: 'By nomination by the Governor', correct: false }
+        ]},
+        { text: 'What is the term length for the Legislative Assembly of a State, unless dissolved earlier?', options: [
+            { text: 'Four years', correct: false },
+            { text: 'Five years', correct: true },
+            { text: 'Six years', correct: false },
+            { text: 'Seven years', correct: false }
+        ]},
+        { text: 'What qualification is required for a person to be elected to the Legislative Assembly of a State?', options: [
+            { text: 'At least 30 years of age', correct: false },
+            { text: 'At least 25 years of age', correct: true },
+            { text: 'At least 35 years of age', correct: false },
+            { text: 'At least 40 years of age', correct: false }
+        ]},
+        { text: 'Who has the power to summon the House or Houses of the Legislature of a State?', options: [
+            { text: 'The Chief Minister', correct: false },
+            { text: 'The Speaker', correct: false },
+            { text: 'The Governor', correct: true },
+            { text: 'The President', correct: false }
+        ]},
+        { text: 'Which Article of the Indian Constitution deals with the creation of a new State or alteration of boundaries of existing States?', options: [
+            { text: 'Article 1', correct: false },
+            { text: 'Article 2', correct: false },
+            { text: 'Article 3', correct: true },
+            { text: 'Article 4', correct: false }
+        ]}
+                // Add more questions here
+            ],
+            'Executive': [
+                { text: 'What is the primary role of the Executive?', options: [
+                    { text: 'Policy Implementation', correct: true },
+                    { text: 'Law Making', correct: false },
+                    { text: 'Judicial Review', correct: false },
+                    { text: 'Legislative Decisions', correct: false }
+                ]},
+                { text: 'Who is the head of the Executive in India?', options: [
+                    { text: 'President', correct: false },
+                    { text: 'Prime Minister', correct: true },
+                    { text: 'Chief Justice', correct: false },
+                    { text: 'Speaker of the Lok Sabha', correct: false }
+                ]},
+                { text: 'Under Article 74, the President of India must act in accordance with whose advice?', options: [
+            { text: 'The Vice President', correct: false },
+            { text: 'The Prime Minister', correct: false },
+            { text: 'The Council of Ministers', correct: true },
+            { text: 'The Chief Justice of India', correct: false }
+        ]},
+        { text: 'Article 143 of the Indian Constitution deals with which of the following?', options: [
+            { text: 'Presidential power to seek advisory opinion from the Supreme Court', correct: true },
+            { text: 'Impeachment of the President', correct: false },
+            { text: 'Election disputes', correct: false },
+            { text: 'Special status to Jammu and Kashmir', correct: false }
+        ]},
+        { text: 'Which Article allows the President to promulgate ordinances when Parliament is not in session?', options: [
+            { text: 'Article 120', correct: false },
+            { text: 'Article 123', correct: true },
+            { text: 'Article 124', correct: false },
+            { text: 'Article 126', correct: false }
+        ]},
+        { text: 'Article 86 provides the President with the power to do what?', options: [
+            { text: 'Address either House of Parliament', correct: true },
+            { text: 'Dissolve the Lok Sabha', correct: false },
+            { text: 'Impeach the Prime Minister', correct: false },
+            { text: 'Amend the Constitution', correct: false }
+        ]},
+        { text: 'Under which Article can the President’s Rule be imposed in a state?', options: [
+            { text: 'Article 350', correct: false },
+            { text: 'Article 352', correct: false },
+            { text: 'Article 356', correct: true },
+            { text: 'Article 360', correct: false }
+        ]},
+        { text: 'Article 148 of the Indian Constitution deals with which position?', options: [
+            { text: 'Comptroller and Auditor General of India', correct: true },
+            { text: 'Attorney-General of India', correct: false },
+            { text: 'Chief Election Commissioner', correct: false },
+            { text: 'Chairman of the Union Public Service Commission', correct: false }
+        ]},
+        { text: 'Which Article mandates that the executive power of the state shall be vested in the Governor?', options: [
+            { text: 'Article 153', correct: false },
+            { text: 'Article 154', correct: true },
+            { text: 'Article 155', correct: false },
+            { text: 'Article 156', correct: false }
+        ]},
+        { text: 'Article 167 mandates the duty of the Chief Minister of each state in respect of which of the following?', options: [
+            { text: 'Furnishing information to the Governor', correct: true },
+            { text: 'Election of the President', correct: false },
+            { text: 'Impeachment of the Governor', correct: false },
+            { text: 'Addressing the Assembly', correct: false }
+        ]},
+        { text: 'Which Article of the Indian Constitution mentions the discretionary powers of the Governor?', options: [
+            { text: 'Article 163', correct: true },
+            { text: 'Article 164', correct: false },
+            { text: 'Article 165', correct: false },
+            { text: 'Article 166', correct: false }
+        ]}
+                // Add more questions here
+            ],
+            'Judiciary': [
+                { text: 'What is the primary function of the Judiciary?', options: [
+                    { text: 'Law Enforcement', correct: false },
+                    { text: 'Law Interpretation', correct: true },
+                    { text: 'Legislative Proposals', correct: false },
+                    { text: 'Policy Formulation', correct: false }
+                ]},
+                { text: 'How many levels of courts are there in India?', options: [
+                    { text: 'Two', correct: false },
+                    { text: 'Three', correct: false },
+                    { text: 'Four', correct: true },
+                    { text: 'Five', correct: false }
+                ]},
+                { text: 'A whistleblower is fired for exposing corporate misconduct.What legal protections are available?', options: [
+                    { text: 'File a wrongful termination lawsuit ', correct: false },
+                    { text: ' Seek protection under whistleblower laws ', correct: false },
+                    { text: 'Demand reinstatement with back pay', correct: false },
+                    { text: ' All of the above', correct: true }
+                ]},
+                { text: 'Which article ensures that the Supreme Court shall be a court of record?', options: [
+                    { text: 'Article 128', correct: false },
+                    { text: 'Article 129', correct: true },
+                    { text: 'Article 130', correct: false },
+                    { text: 'Article 131', correct: false }
+                ]},
+                { text: 'Which law deals with the protection of biodiversity in India? ', options: [
+                    { text: 'Biological Diversity Act', correct: true },
+                    { text: 'Environment Protection Act', correct: false },
+                    { text: 'Wildlife Protection Act', correct: false },
+                    { text: 'All of the above ', correct: false }
+                ]},
+                { text: 'What law provides for the protection of whistleblowers in India?', options: [
+                    { text: 'Whistleblowers Protection Act', correct: true },
+                    { text: 'Prevention of Corruption Act', correct: false },
+                    { text: 'Right to Information Act', correct: false },
+                    { text: ' None of the above', correct: false }
+                ]},
+                { text: 'Which law governs the regulation of nuclear energy in India?', options: [
+            { text: 'Atomic Energy Act', correct: true },
+            { text: 'Environment Protection Act', correct: false },
+            { text: 'Electricity Act', correct: false },
+            { text: 'None of the above', correct: false }
+        ]},
+        { text: 'What law governs the protection of geographical indications in India?', options: [
+            { text: 'Geographical Indications of Goods (Registration and Protection) Act', correct: true },
+            { text: 'Patents Act', correct: false },
+            { text: 'Trademarks Act', correct: false },
+            { text: 'None of the above', correct: false }
+        ]},
+        { text: 'Which law deals with the regulation of competition in India?', options: [
+            { text: 'Competition Act', correct: true },
+            { text: 'Companies Act', correct: false },
+            { text: 'Monopolies and Restrictive Trade Practices Act', correct: false },
+            { text: 'None of the above', correct: false }
+        ]},
+        { text: 'What law provides for the protection of the rights of persons with disabilities in India?', options: [
+            { text: 'Rights of Persons with Disabilities Act', correct: true },
+            { text: 'Mental Health Care Act', correct: false },
+            { text: 'Equal Opportunities Act', correct: false },
+            { text: 'None of the above', correct: false }
+        ]}
+                // Add more questions here
+            ]
+        };
+
+        let isSpinning = false;
+        let startAngle = 0;
+        const arc = Math.PI / (segments.length / 2);
+        let spinTimeout = null;
+        let spinAngleStart = 0;
+        let spinTime = 0;
+        let spinTimeTotal = 0;
+        let selectedSegment = '';
+
+        function drawRouletteWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+
+            for (let i = 0; i < segments.length; i++) {
+                const angle = startAngle + i * arc;
+                ctx.fillStyle = segments[i].color;
+
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, angle, angle + arc);
+                ctx.lineTo(canvas.width / 2, canvas.height / 2);
+                ctx.fill();
+                ctx.save();
+
+                ctx.fillStyle = 'black';
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(angle + arc / 2);
+
+                // Adjust text size and position
+                ctx.font = 'bold 14px Arial'; // Adjusted font size for better fit
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(segments[i].text, canvas.width / 2.5, 0); // Adjusted position
+
+                ctx.restore();
+            }
+        }
+
+        function rotateWheel() {
+            spinAngleStart += Math.random() * 10 + 10;
+            spinTime = 0;
+            spinTimeTotal = Math.random() * 3000 + 4000;
+            rotate();
+        }
+
+        function rotate() {
+            spinTime += 30;
+            if (spinTime >= spinTimeTotal) {
+                stopRotateWheel();
+                return;
+            }
+            const spinAngle = spinAngleStart * (1 - spinTime / spinTimeTotal);
+            startAngle += spinAngle * Math.PI / 180;
+            drawRouletteWheel();
+            spinTimeout = setTimeout(rotate, 30);
+        }
+
+        function stopRotateWheel() {
+            clearTimeout(spinTimeout);
+            const degrees = startAngle * 180 / Math.PI + 90;
+            const arcd = arc * 180 / Math.PI;
+            const index = Math.floor((360 - degrees % 360) / arcd);
+            selectedSegment = segments[index].text;
+            
+            document.getElementById('wheelCanvas').classList.add('glow');
+            showQuestion(selectedSegment);
+            isSpinning = false;
+        }
+
+        function showQuestion(segment) {
+            const questionsList = questions[segment];
+            const randomIndex = Math.floor(Math.random() * questionsList.length);
+            const question = questionsList[randomIndex];
+
+            questionText.textContent = question.text;
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option.text;
+                button.className = 'optionButton';
+                button.addEventListener('click', () => checkAnswer(option, button));
+                optionsContainer.appendChild(button);
+            });
+            questionContainer.style.display = 'block';
+            nextButton.style.display = 'none'; // Hide next button initially
+        }
+
+        function checkAnswer(option, button) {
+            if (option.correct) {
+                button.classList.add('glow');
+                celebrateCorrectAnswer();
+                setTimeout(() => {
+                    alert('Correct!');
+                    nextButton.style.display = 'inline-block'; // Show next button after answer
+                }, 500);
+            } else {
+                button.classList.add('wrong');
+                setTimeout(() => alert('Wrong Answer!'), 500);
+            }
+        }
+
+        function celebrateCorrectAnswer() {
+            // Create confetti
+            const confettiCount = 100;
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                confetti.className = 'confettiPiece';
+                confettiContainer.appendChild(confetti);
+            }
+            setTimeout(() => {
+                confettiContainer.innerHTML = '';
+            }, 3000);
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A2'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function nextQuestion() {
+            questionContainer.style.display = 'none';
+            nextButton.style.display = 'none'; // Hide next button
+        }
+
+        function spinWheel() {
+            if (!isSpinning) {
+                isSpinning = true;
+                rotateWheel();
+            }
+        }
+
+        drawRouletteWheel();
+    </script>
+</body>
+</html>

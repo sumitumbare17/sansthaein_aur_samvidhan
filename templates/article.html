@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sansthaein Aur Samvidhan</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/article.css" />
+    <link rel="stylesheet" href="/static/css/all.min.css" />
+</head>
+<body>
+    <!-- =========================================Start Header Area========================================= -->
+    <header class="header_area">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#"><img src="/static/images/logo.png" height="100" width="100" alt="logo"></a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="home">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Play & Learn
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="games">Games</a></li>
+                                <li><a class="dropdown-item" href="quiz">Quiz</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="article">Articles & Resources</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- =========================================End Header Area========================================= -->
+    <div class="content">
+        <div class="header-container">
+            <input type="text" id="searchInput" placeholder="Search articles...">
+            <select id="filterSelect">
+                <option value="">All Categories</option>
+                <option value="Legislature">Legislature</option>
+                <option value="Executive">Executive</option>
+                <option value="Judiciary">Judiciary</option>
+            </select>
+        </div>
+
+        <!-- Article Cards -->
+        <div class="article" data-category="Legislature">
+            <h3>Understanding the Legislative Process</h3>
+            <p>The legislative process involves several key stages in which proposed laws, or bills, are developed, debated, 
+                and refined before becoming law. Initially, a bill is introduced and reviewed by committees, followed by debate and 
+                amendments in both houses of the legislature. If approved, it is sent to the executive (e.g., the President or Governor) 
+                for final approval. Upon signing, the bill becomes law and is enforced.            </p>
+            <a href="https://www.youtube.com/watch?v=Xz_uQHX12g8" class="button">Video</a>
+            <a href="https://legislative.gov.in/" class="button">Infographic</a>
+        </div>
+
+        <div class="article" data-category="Executive">
+            <h3>The Role of the President</h3>
+            <p>
+                The President serves as the head of state and government, overseeing the executive branch and ensuring that laws are faithfully executed. 
+                The President also has the authority to sign or veto legislation, appoint key officials, and represent the country in diplomatic matters. Additionally, 
+                the President acts as the Commander-in-Chief of the armed forces and plays a crucial role in shaping domestic and foreign policy.
+            </p>
+            <a href="https://www.youtube.com/watch?v=CpLlZJCo4bs" class="button">Video</a>
+            <a href="https://knowindia.india.gov.in/profile/the-union/executive.php#:~:text=The%20Union%20executive%20consists%20of,aid%20and%20advise%20the%20President." class="button">Infographic</a>
+        </div>
+
+        <div class="article" data-category="Judiciary">
+            <h3>Structure of the Judicial System</h3>
+            <p>The judicial system is structured into multiple levels to ensure justice and legal oversight. At the base are lower courts, which handle most cases and include municipal or district courts. 
+                Above them are intermediate appellate courts that review decisions from the lower courts. At the top is the supreme court, which serves as the highest appellate body and has the final say on legal matters, 
+                interpreting the constitution and resolving major legal disputes.
+            </p>
+            <a href="https://www.youtube.com/watch?v=3iPsnncJmAg" class="button">Video</a>
+            <a href="https://doj.gov.in/" class="button">Infographic</a>
+        </div>
+    </div>
+
+    <footer>
+        <!-- <div class="footer-content"> -->
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Sansthaein Aur Samvidhan. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- jQuery JS file -->
+    <script src="./js/jquery.3.7.1.js"></script>
+    <!-- Bootstrap JS file -->
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

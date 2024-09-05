@@ -1,0 +1,156 @@
+/* Basic reset and styles for the body */
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; Light gray background
+} */
+
+/* Header styles */
+/* header {
+    text-align: center;
+    padding: 20px;
+    background-color: #333; /* Dark header */
+    /* color: #fff; /* White text color */
+/* Navbar Styling */
+.header_area .main_menu .navbar .navbar-brand {
+    padding: 0 2rem 0 5rem;
+}
+
+.header_area .main_menu .navbar {
+    padding: 2rem 2rem;
+    background-color: #E1E1E1;
+}
+
+.header_area .main_menu .nav-item .nav-link {
+    font: normal 500 18px/2px var(--roboto);
+    text-transform: uppercase;
+    padding: 1.7rem;
+    color: var(--title-color); /* Navbar link color */
+    text-decoration: none; /* Ensure no underline */
+}
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link.active {
+    background: var(--gradient-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: unset;
+}
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link:hover {
+    color: gray; /* Change text color to gray on hover */
+    text-decoration: none; /* Remove underline on hover */
+    background: none; /* Ensure no background change */
+    transform: none; /* Remove scaling effect */
+}
+
+/* Search bar styles */
+#searchInput {
+    width: 80%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px;
+    box-shadow: 0 4px 8px rgba(0.1, 0.1, 0.1, 0.1);
+
+}
+
+/* Filter dropdown styles */
+#filterSelect {
+    padding: 8px;
+    margin: 0 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0.1, 0.1, 0.1, 0.1);
+}
+
+/* Main content area styles */
+.content {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Article card styles */
+.article {
+    background-color: #fff; /* White background for article cards */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px; /* Margin between articles */
+    text-align: center;
+}
+
+.article h3 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.article p {
+    padding: 0 20px;
+    font-size: 1em;
+    color: #1e3c72;
+}
+
+/* Button styles */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e3c72;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #162d59; /* Darker shade for hover effect */
+}
+
+/* Footer */
+footer {
+    background-color: #E1E1E1; /* Blue footer background */
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+    min-width: 200px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #7a7575;
+    padding: 10px;
+    font-size: 16px;
+    padding-left: 10rem;
+}

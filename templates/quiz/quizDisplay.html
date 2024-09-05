@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h2 {
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+            color: #666;
+        }
+        .options {
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            margin: 10px 0;
+            list-style-type: none; /* Remove bullet points */
+        }
+        .options li label {
+            cursor: pointer;
+            color: #333;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        .timer {
+            font-size: 18px;
+            color: #ff0000;
+            text-align: right;
+        }
+        .feedback {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .correct {
+            color: #28a745;
+        }
+        .incorrect {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer">Time Left: <span id="timer">00:30</span></div>
+        <h2 id="question-heading">Question 1</h2>
+        <p id="question-text" class="question">Who is the head of the State Executive in India?</p>
+        <form id="quiz-form">
+            <ul id="options-list" class="options">
+                <li><label><input type="radio" name="answer" value="A"> a) The Chief Minister</label></li>
+                <li><label><input type="radio" name="answer" value="B"> b) The Governor</label></li>
+                <li><label><input type="radio" name="answer" value="C"> c) The President</label></li>
+                <li><label><input type="radio" name="answer" value="D"> d) The Speaker</label></li>
+            </ul>
+            <button class="submit-btn" type="button" onclick="submitAnswer()">Submit Answer</button>
+        </form>
+        <p id="feedback" class="feedback"></p>
+    </div>
+
+    <script>
+        let timeLeft = 30;
+        let score = 0;  // Initialize score
+        const timerElement = document.getElementById('timer');
+        const feedbackElement = document.getElementById('feedback');
+        const questions = [
+            {
+                question: "Who is the head of the State Executive in India?",
+                options: {
+                    'A': 'The Chief Minister',
+                    'B': 'The Governor',
+                    'C': 'The President',
+                    'D': 'The Speaker'
+                },
+                answer: 'B'
+            },
+            {
+                question: "Which article of the Indian Constitution provides for the impeachment of the President?",
+                options: {
+                    'A': 'Article 60',
+                    'B': 'Article 61',
+                    'C': 'Article 62',
+                    'D': 'Article 63'
+                },
+                answer: 'B'
+            },
+            {
+                question: "The Prime Minister is appointed by whom?",
+                options: {
+                    'A': 'The Chief Justice of India',
+                    'B': 'The President',
+                    'C': 'The Lok Sabha',
+                    'D': 'The Rajya Sabha'
+                },
+                answer: 'B'
+            },
+            {
+                question: "Which article of the Indian Constitution defines the duties of the Prime Minister as respects the furnishing of information to the President?",
+                options: {
+                    'A': 'Article 77',
+                    'B': 'Article 78',
+                    'C': 'Article 79',
+                    'D': 'Article 80'
+                },
+                answer: 'B'
+            },
+            {
+                question: "The Attorney-General for India is appointed by the President under which article?",
+                options: {
+                    'A': 'Article 75',
+                    'B': 'Article 76',
+                    'C': 'Article 77',
+                    'D': 'Article 78'
+                },
+                answer: 'B'
+            },
+            {
+                question: "Which article grants the President of India the power to declare a financial emergency?",
+                options: {
+                    'A': 'Article 352',
+                    'B': 'Article 356',
+                    'C': 'Article 360',
+                    'D': 'Article 368'
+                },
+                answer: 'C'
+            },
+            {
+                question: "The executive power of the Union is vested in the President under which article?",
+                options: {
+                    'A': 'Article 52',
+                    'B': 'Article 53',
+                    'C': 'Article 54',
+                    'D': 'Article 55'
+                },
+                answer: 'B'
+            },
+            {
+                question: "Who presides over the joint session of both Houses of Parliament?",
+                options: {
+                    'A': 'The President',
+                    'B': 'The Prime Minister',
+                    'C': 'The Speaker of Lok Sabha',
+                    'D': 'The Chairman of Rajya Sabha'
+                },
+                answer: 'C'
+            },
+            {
+                question: "The Council of Ministers is collectively responsible to which house?",
+                options: {
+                    'A': 'The Rajya Sabha',
+                    'B': 'The Lok Sabha',
+                    'C': 'Both Houses of Parliament',
+                    'D': 'The President'
+                },
+                answer: 'B'
+            },
+            {
+                question: "Which article provides the President with the power to promulgate ordinances?",
+                options: {
+                    'A': 'Article 121',
+                    'B': 'Article 122',
+                    'C': 'Article 123',
+                    'D': 'Article 124'
+                },
+                answer: 'C'
+            }
+        ];
+        let currentQuestionIndex = 0;
+
+        function displayQuestion(index) {
+            if (index < questions.length) {
+                const question = questions[index];
+                document.getElementById('question-heading').textContent = `Question ${index + 1}`;
+                document.getElementById('question-text').textContent = question.question;
+                
+                const optionsList = document.getElementById('options-list');
+                optionsList.innerHTML = '';  // Clear previous options
+                
+                for (const [key, value] of Object.entries(question.options)) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<label><input type="radio" name="answer" value="${key}"> ${key}) ${value}</label>`;
+                    optionsList.appendChild(li);
+                }
+                feedbackElement.textContent = '';  // Clear previous feedback
+            } else {
+                // Redirect to result page with the score
+                window.location.href = 'result.html?score=' + score;
+            }
+        }
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                const answerValue = selectedOption.value;
+                const correctAnswer = questions[currentQuestionIndex].answer;
+                
+                // Check if the answer is correct
+                if (answerValue === correctAnswer) {
+                    score++;  // Increase score for correct answer
+                    feedbackElement.textContent = 'Woo Hoo! 🎉 That\'s correct!';
+                    feedbackElement.className = 'feedback correct';
+                } else {
+                    feedbackElement.textContent = 'Oops! 😢 That\'s incorrect. The correct answer was ' + correctAnswer;
+                    feedbackElement.className = 'feedback incorrect';
+                }
+
+                // Move to the next question after a short delay
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                }, 1000);
+            } else {
+                alert('Please select an answer.');
+            }
+        }
+
+        // Timer logic
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitAnswer();
+            }
+        }, 1000);
+
+        // Initial question display
+        displayQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>
+
+
+
+
+

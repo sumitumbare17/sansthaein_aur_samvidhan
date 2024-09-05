@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        #quiz-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+        #question-text {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .answer-options button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #333;
+        }
+        .answer-options button:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+        .answer-options button.correct {
+            background-color: #4caf50;
+            color: #fff;
+        }
+        .answer-options button.incorrect {
+            background-color: #f44336;
+            color: #fff;
+        }
+        #next-button {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #next-button:hover {
+            background-color: #357abd;
+        }
+        #explanation {
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+        }
+        #timer, #question-count {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        #category-selection button {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        #category-selection button:hover {
+            background-color: #357abd;
+        }
+        #restart-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #ff9800;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #restart-button:hover {
+            background-color: #f57c00;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div id="category-selection">
+        <h1>Select Quiz Category</h1>
+        <button onclick="startQuiz('judiciary')">Judiciary</button>
+        <button onclick="startQuiz('legislature')">Legislature</button>
+        <button onclick="startQuiz('executive')">Executive</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div id="question-count"></div>
+        <div id="timer">Time left: 60</div>
+        <div id="question-text"></div>
+        <div class="answer-options">
+            <button onclick="selectAnswer('a', this)">Option A</button>
+            <button onclick="selectAnswer('b', this)">Option B</button>
+            <button onclick="selectAnswer('c', this)">Option C</button>
+            <button onclick="selectAnswer('d', this)">Option D</button>
+        </div>
+        <div id="explanation"></div>
+        <button id="next-button" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <h1>Quiz Completed!</h1>
+        <div id="final-score"></div>
+        <button id="restart-button" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+    const questions = {
+        judiciary: [
+            {
+                text: "Which law governs the regulation of nuclear energy in India?",
+                options: ["Atomic Energy Act", "Environment Protection Act", "Electricity Act", "None of the above"],
+                correct: "a",
+                explanation: "The Atomic Energy Act governs the regulation of nuclear energy in India."
+            },
+            {
+                text: "The Supreme Court of India is established under which part of the Constitution?",
+                options: ["Part III", "Part IV", "Part V", "Part VI"],
+                correct: "c",
+                explanation: "The Supreme Court is established under Part V of the Constitution of India."
+            },
+            {
+                text: "What is the retirement age for a Supreme Court judge in India?",
+                options: ["60 years", "62 years", "65 years", "70 years"],
+                correct: "c",
+                explanation: "A Supreme Court judge in India retires at the age of 65."
+            },
+            {
+                text: "Which article empowers the Supreme Court to have original jurisdiction in disputes between the Government of India and one or more States?",
+                options: ["Article 131", "Article 132", "Article 133", "Article 134"],
+                correct: "a",
+                explanation: "Article 131 empowers the Supreme Court to have original jurisdiction in such disputes."
+            },
+            {
+                text: "Which article of the Indian Constitution deals with the power of the Supreme Court to grant special leave to appeal?",
+                options: ["Article 132", "Article 133", "Article 134", "Article 136"],
+                correct: "d",
+                explanation: "Article 136 deals with the power of the Supreme Court to grant special leave to appeal."
+            },
+            {
+                text: "The power to increase the jurisdiction of the Supreme Court is vested in which authority?",
+                options: ["President", "Parliament", "Prime Minister", "Chief Justice of India"],
+                correct: "b",
+                explanation: "The power to increase the jurisdiction of the Supreme Court is vested in the Parliament."
+            },
+            {
+                text: "Under which article does the Supreme Court have the power to transfer cases from one High Court to another?",
+                options: ["Article 139", "Article 139A", "Article 140", "Article 141"],
+                correct: "b",
+                explanation: "Article 139A grants the Supreme Court the power to transfer cases between High Courts."
+            },
+            {
+                text: "The law declared by the Supreme Court shall be binding on all courts within the territory of India under which article?",
+                options: ["Article 140", "Article 141", "Article 142", "Article 143"],
+                correct: "b",
+                explanation: "Article 141 states that the law declared by the Supreme Court is binding on all courts in India."
+            },
+            {
+                text: "Under which article can the President of India seek the advisory opinion of the Supreme Court?",
+                options: ["Article 142", "Article 143", "Article 144", "Article 145"],
+                correct: "b",
+                explanation: "Article 143 allows the President of India to seek the advisory opinion of the Supreme Court."
+            },
+            {
+                text: "Which article ensures that the Supreme Court shall be a court of record?",
+                options: ["Article 128", "Article 129", "Article 130", "Article 131"],
+                correct: "b",
+                explanation: "Article 129 ensures that the Supreme Court is a court of record."
+            }
+            // Add more questions for the judiciary category here
+        ],
+        legislature: [
+            {
+                text: "Which part of the Constitution deals with the Parliament of India?",
+                options: ["Part IV", "Part V", "Part VI", "Part VII"],
+                correct: "b",
+                explanation: "Part V of the Indian Constitution deals with the Parliament of India."
+            },
+            {
+                text: "What is the maximum term of the Lok Sabha?",
+                options: ["4 years", "5 years", "6 years", "7 years"],
+                correct: "b",
+                explanation: "The maximum term of the Lok Sabha is 5 years."
+            },
+            {
+                text: "Who can dissolve the Lok Sabha?",
+                options: ["President", "Prime Minister", "Speaker", "Chief Justice"],
+                correct: "a",
+                explanation: "The President of India has the power to dissolve the Lok Sabha."
+            },
+            {
+                text: "Which house of Parliament is known as the Upper House?",
+                options: ["Lok Sabha", "Rajya Sabha", "Vidhan Sabha", "Vidhan Parishad"],
+                correct: "b",
+                explanation: "The Rajya Sabha is known as the Upper House of Parliament."
+            },
+            {
+                text: "How many members does the Rajya Sabha have at present?",
+                options: ["250", "245", "233", "238"],
+                correct: "b",
+                explanation: "The Rajya Sabha has 245 members at present."
+            },
+            {
+                text: "Who presides over the meetings of the Rajya Sabha?",
+                options: ["Prime Minister", "President", "Speaker", "Vice President"],
+                correct: "d",
+                explanation: "The Vice President of India presides over the meetings of the Rajya Sabha."
+            },
+            {
+                text: "Which article of the Constitution provides for the appointment of the Speaker of the Lok Sabha?",
+                options: ["Article 93", "Article 94", "Article 95", "Article 96"],
+                correct: "a",
+                explanation: "Article 93 provides for the appointment of the Speaker of the Lok Sabha."
+            },
+            {
+                text: "What is the minimum age for a candidate to contest for the Lok Sabha elections?",
+                options: ["25 years", "30 years", "35 years", "40 years"],
+                correct: "a",
+                explanation: "The minimum age to contest for the Lok Sabha elections is 25 years."
+            },
+            {
+                text: "Who decides the number of members of the Rajya Sabha from each state?",
+                options: ["President", "Prime Minister", "Election Commission", "Parliament"],
+                correct: "d",
+                explanation: "The number of members of the Rajya Sabha from each state is decided by the Parliament."
+            }
+            // Add more questions for the legislature category here
+        ],
+        executive: [
+            {
+                text: "Who is the head of the Indian government?",
+                options: ["President", "Vice President", "Prime Minister", "Speaker"],
+                correct: "c",
+                explanation: "The Prime Minister is the head of the Indian government."
+            },
+            {
+                text: "Which article of the Constitution provides for the appointment of the Prime Minister?",
+                options: ["Article 75", "Article 76", "Article 77", "Article 78"],
+                correct: "a",
+                explanation: "Article 75 provides for the appointment of the Prime Minister."
+            },
+            {
+                text: "The Prime Minister's Council of Ministers is collectively responsible to which house of Parliament?",
+                options: ["Rajya Sabha", "Lok Sabha", "Both Houses", "None"],
+                correct: "b",
+                explanation: "The Prime Minister's Council of Ministers is collectively responsible to the Lok Sabha."
+            },
+            {
+                text: "Which article empowers the President to appoint the Prime Minister?",
+                options: ["Article 76", "Article 77", "Article 78", "Article 79"],
+                correct: "a",
+                explanation: "Article 76 empowers the President to appoint the Prime Minister."
+            },
+            {
+                text: "Who administers the oath of office to the President of India?",
+                options: ["Prime Minister", "Vice President", "Chief Justice of India", "Speaker of Lok Sabha"],
+                correct: "c",
+                explanation: "The Chief Justice of India administers the oath of office to the President."
+            },
+            {
+                text: "Under which article can the President of India dissolve the Lok Sabha?",
+                options: ["Article 85", "Article 86", "Article 87", "Article 88"],
+                correct: "a",
+                explanation: "Article 85 provides for the dissolution of the Lok Sabha by the President."
+            },
+            {
+                text: "Which article deals with the appointment of the Attorney General of India?",
+                options: ["Article 76", "Article 77", "Article 78", "Article 79"],
+                correct: "a",
+                explanation: "Article 76 deals with the appointment of the Attorney General of India."
+            },
+            {
+                text: "Who can be appointed as a Minister in the Union Council of Ministers?",
+                options: ["A member of Lok Sabha", "A member of Rajya Sabha", "Both", "Neither"],
+                correct: "c",
+                explanation: "Both members of Lok Sabha and Rajya Sabha can be appointed as Ministers in the Union Council."
+            },
+            {
+                text: "What is the maximum number of Ministers that can be appointed to the Union Council of Ministers?",
+                options: ["50", "60", "70", "80"],
+                correct: "b",
+                explanation: "The maximum number of Ministers in the Union Council of Ministers is 60."
+            }
+            // Add more questions for the executive category here
+        ]
+    };
+
+    let currentCategory;
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timerInterval;
+    let timeLeft = 60;
+
+    function startQuiz(category) {
+        currentCategory = category;
+        currentQuestionIndex = 0;
+        score = 0;
+        timeLeft = 60;
+        document.getElementById('category-selection').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        document.getElementById('result-area').style.display = 'none';
+        displayQuestion();
+        startTimer();
+    }
+
+    function displayQuestion() {
+        const questionData = questions[currentCategory][currentQuestionIndex];
+        document.getElementById('question-text').textContent = questionData.text;
+        const buttons = document.querySelectorAll('.answer-options button');
+        buttons.forEach((button, index) => {
+            button.textContent = `Option ${String.fromCharCode(65 + index)}: ${questionData.options[index]}`;
+            button.classList.remove('correct', 'incorrect');
+            button.disabled = false;
+        });
+        document.getElementById('next-button').style.display = 'none';
+        document.getElementById('explanation').textContent = '';
+        document.getElementById('question-count').textContent = `Question ${currentQuestionIndex + 1} of 10`;
+    }
+
+    function selectAnswer(option, button) {
+        const questionData = questions[currentCategory][currentQuestionIndex];
+        const correctOption = questionData.correct;
+        const buttons = document.querySelectorAll('.answer-options button');
+        
+        buttons.forEach((btn, index) => {
+            const btnOption = String.fromCharCode(97 + index);
+            if (btnOption === correctOption) {
+                btn.classList.add('correct');
+            } else if (btnOption === option) {
+                btn.classList.add('incorrect');
+            }
+            btn.disabled = true;
+        });
+
+        if (option === correctOption) {
+            score++;
+        }
+        document.getElementById('explanation').textContent = questionData.explanation;
+        document.getElementById('next-button').style.display = 'block';
+        clearInterval(timerInterval);
+    }
+
+    function nextQuestion() {
+        if (currentQuestionIndex < 9) {
+            currentQuestionIndex++;
+            displayQuestion();
+            startTimer();
+        } else {
+            endQuiz();
+        }
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('final-score').textContent = `Your score: ${score} / 10`;
+        clearInterval(timerInterval);
+    }
+
+    function restartQuiz() {
+        document.getElementById('category-selection').style.display = 'block';
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'none';
+    }
+
+    function startTimer() {
+        timeLeft = 60;
+        document.getElementById('timer').textContent = `Time left: ${timeLeft}`;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').textContent = `Time left: ${timeLeft}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                nextQuestion();
+            }
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>

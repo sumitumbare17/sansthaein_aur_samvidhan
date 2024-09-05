@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+        h2 {
+            color: #333;
+        }
+        .score {
+            font-size: 48px;
+            color: #28a745;
+            margin: 20px 0;
+        }
+        .feedback {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .retry-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .retry-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Quiz Completed!</h2>
+        <div class="score" id="score">0/10</div>
+        <p class="feedback" id="feedback"></p>
+        <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const score = getQueryParam('score');
+        document.getElementById('score').textContent = score + '/10';
+
+        let feedbackText = '';
+        if (score >= 8) {
+            feedbackText = 'Great job! You have a good understanding of constitutional topics.';
+        } else if (score >= 5) {
+            feedbackText = 'Good effort! You have a fair understanding of the topics.';
+        } else {
+            feedbackText = 'Keep practicing! You can improve with more study.';
+        }
+        document.getElementById('feedback').textContent = feedbackText;
+
+        function retryQuiz() {
+            window.location.href = 'quizIntro.html';
+        }
+    </script>
+</body>
+</html>
+

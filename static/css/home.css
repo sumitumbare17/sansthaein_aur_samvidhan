@@ -1,0 +1,223 @@
+/* Basic reset and styles for the body */
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light gray background */
+/* }
+
+/* Header styles */
+/*
+ header {
+    text-align: center;
+    padding: 20px;
+    background-color: #333; /* Dark header */
+    /* color: #fff; White text color */
+/* }  */
+
+
+
+/* Main content area styles */
+.content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Full-width section styles */
+.full-width-section {
+    background-color: #fff; /* White background for sections */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Margin between sections */
+    width: calc(100% + 20px); /* Extend beyond the viewport width */
+    margin-left: -10px; /* Adjust left margin to balance the extension */
+    box-sizing: border-box; /* Includes padding and border in the width */
+}
+
+.section {
+    background-color: #fff; /* White background for sections */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Margin between sections */
+    flex: 1; /* Allows sections to grow and shrink as needed */
+    min-width: 280px; /* Ensures a minimum width for each section */
+    max-width: calc(33.333% - 20px); /* Maximum width of sections with gap adjustment */
+}
+
+.section h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+}
+
+.section p {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Link styles */
+.link-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e3c72; /* Dark button background */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.link-button:hover {
+    background-color: #555; /* Darker shade on hover */
+}
+
+/* List styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+/* Horizontal list styles */
+.horizontal-list {
+    display: flex;
+    gap: 20px; /* Space between list items */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.horizontal-list > div {
+    flex: 1;
+}
+
+.horizontal-list ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontal-list ul li {
+    margin: 0; /* Remove margin for list items */
+}
+
+/* Horizontal layout for sections */
+.horizontal-layout {
+    display: flex;
+    gap: 20px; /* Space between sections */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.horizontal-layout .section {
+    flex: 1; /* Allow sections to grow equally */
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Navbar Styling */
+.header_area .main_menu .navbar .navbar-brand {
+    padding: 0 2rem 0 5rem;
+}
+
+.header_area .main_menu .navbar {
+    padding: 2rem 2rem;
+    background-color: #E1E1E1;
+
+}
+
+.header_area .main_menu .nav-item .nav-link {
+    font: normal 500 18px/2px var(--roboto);
+    text-transform: uppercase;
+    padding: 1.7rem;
+    color: var(--title-color); /* Navbar link color */
+    text-decoration: none; /* Ensure no underline */
+}
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link.active {
+    background: var(--gradient-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: unset;
+}
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link:hover {
+    color: gray; /* Change text color to gray on hover */
+    text-decoration: none; /* Remove underline on hover */
+    background: none; /* Ensure no background change */
+    transform: none; /* Remove scaling effect */
+}
+
+/* Carousel */
+.carousel {
+    padding-left: 10rem;
+    align-items: center;
+}
+
+/* Intro */
+.intro {
+    align-items: center;
+    padding-top: 5rem;
+    padding-left: 20rem;
+    padding-right: 10rem;
+    justify-content: center;
+}
+
+.para {
+    padding-left: 2rem;
+    padding-right: 10rem;
+}
+
+/* Footer */
+footer {
+    background-color: #E1E1E1; /* Blue footer background */
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+    min-width: 200px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    border-top: 3px solid #a7a3a3;
+    /* padding: 10px; */
+    font-size: 14px;
+    padding-left: 9rem;
+}
+
+

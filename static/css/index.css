@@ -1,0 +1,142 @@
+/* Import fonts from fonts.css file */
+@import url(./fonts.css);
+
+/* CSS variables */
+@import url(./partials/_variables.css);
+
+/* Global */
+@import url(./partials/_global.css);
+/* Start Navigation */
+/* Start Navigation */
+.header_area .main_menu .navbar .navbar-brand {
+    padding: 0 2rem 0 5rem;
+}
+
+.header_area .main_menu .navbar {
+    padding: 2rem 2rem;
+    padding: 0 2rem;
+    /* margin-top: 1rem; */
+    background-color: #E1E1E1;
+}
+
+.header_area .main_menu .nav-item .nav-link {
+    font: normal 500 18px/2px var(--roboto);
+    text-transform: uppercase;
+    padding: 1.7rem;
+    color: var(--title-color);
+    text-decoration: none; /* Ensure no underline */
+}
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link.active {
+    background: var(--gradient-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-nav .nav-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar-nav .nav-item .nav-link.btn {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+.navbar-nav .nav-item .nav-link.btn:hover {
+    background: linear-gradient(90deg, #101a24, #1e3c72) !important; /* Added !important */
+    color:white;
+}
+
+
+
+.header_area .main_menu .navbar-nav .nav-item .nav-link:hover {
+    background: var(--gradient-color);
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+}
+/* End Navigation */
+
+/* Start Carousel */
+.carousel {
+    padding-left: 10rem;
+    align-items: center;
+}
+/* End Carousel */
+
+/* Start Intro */
+.intro {
+    align-items: center;
+    padding-top: 5rem;
+    padding-left: 20rem;
+    padding-right: 5rem;
+    justify-content: center;
+}
+.title{
+    padding-left: 30rem;
+    justify-content: center;
+    padding-top: 5rem;
+}
+.para {
+    padding-left: 2rem;
+    padding-right: 10rem;
+}
+/* End Intro */
+
+/* Footer Area */ 
+
+footer {
+    background-color: #E1E1E1;
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 2rem; 
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+    min-width: 200px;
+    margin: 10px; 
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    font-size: 16px;
+    border-top: 3px solid #d4d4d4;
+}
+
+
+/* End Footer */

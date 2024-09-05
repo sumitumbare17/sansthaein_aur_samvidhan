@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-row .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .form-row .form-group:last-child {
+            margin-right: 0;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" required>
+            </div>
+            <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <select id="day" name="day" required>
+                            <option value="" disabled selected>Day</option>
+                            <!-- Options for day -->
+                            <script>
+                                for (let i = 1; i <= 31; i++) {
+                                    document.write('<option value="' + i + '">' + i + '</option>');
+                                }
+                            </script>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="month" name="month" required>
+                            <option value="" disabled selected>Month</option>
+                            <!-- Options for month -->
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="year" name="year" required>
+                            <option value="" disabled selected>Year</option>
+                            <!-- Options for year -->
+                            <script>
+                                const currentYear = new Date().getFullYear();
+                                for (let i = currentYear; i >= 1900; i--) {
+                                    document.write('<option value="' + i + '">' + i + '</option>');
+                                }
+                            </script>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>

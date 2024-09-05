@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Introduction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffa500; /* Orange background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('brain-Photoroom.png'), 
+                              url('Pencil_processed.png');
+            background-size: 300px 200px, 300px 200px;
+            background-position: top left, bottom right;
+            background-repeat: no-repeat;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            z-index: 1; /* Ensures the container is above the background */
+        }
+        h1 {
+            color: #333;
+        }
+        p, li {
+            color: #666;
+            text-align: left;
+        }
+        .start-btn {
+            background-color: #32cd32; /* Light green button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .start-btn:hover {
+            background-color: #28a745; /* Slightly darker green */
+        }
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="Quiz.gif" alt="Quiz Timer">
+        </div>
+        <h1>Welcome to the Quiz</h1>
+        <p>Test your knowledge on constitutional topics.</p>
+        <p>Rules:</p>
+        <ul>
+            <li>Multiple-choice or short-answer questions.</li>
+            <li>For each question, you will have 30 seconds to answer.</li>
+            <li>For every correct answer, you will earn a point.</li>
+            <li>Your answer will not be considered if the time limit is exceeded.</li>
+        </ul>
+        <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <script>
+        function startQuiz() {
+            window.location.href = 'quizDisplay.html';
+        }
+    </script>
+</body>
+</html>
+
+
+
+

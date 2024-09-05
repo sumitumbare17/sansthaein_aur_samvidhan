@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="static/css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Profile</h2>
+        <div class="profile-info">
+            <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Mobile Number:</strong> {{ user.mobile }}</p>
+            <p><strong>Birth Date:</strong> {{ user.birth_date }}</p>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn">Log Out</a>
+    </div>
+</body>
+</html>
